@@ -8,10 +8,18 @@ mod dir;
 use dir::dir_reader;
 
 fn main() -> io::Result<()> {
+    let _ = open_conn();
+
+    Ok(())
+}
+
+fn _list_files() -> io::Result<()> {
+    // Impl handler list files in directory
     let files = dir_reader()?;
     for file in files {
         println!("{:?}", file.as_path());
     }
+
     Ok(())
 }
 
