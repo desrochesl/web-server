@@ -3,7 +3,19 @@ use std::{
     net::{Ipv4Addr, SocketAddrV4, TcpListener, TcpStream},
 };
 
+mod dir;
+
+use dir::dir_reader;
+
 fn main() -> io::Result<()> {
+    let files = dir_reader()?;
+    for file in files {
+        println!("{:?}", file.as_path());
+    }
+    Ok(())
+}
+
+fn open_conn() -> io::Result<()> {
     let addr: Ipv4Addr = Ipv4Addr::new(127, 0, 0, 1);
     let socket: SocketAddrV4 = SocketAddrV4::new(addr, 8080);
     let listener: TcpListener = TcpListener::bind(socket)?;
