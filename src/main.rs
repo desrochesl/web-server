@@ -30,7 +30,7 @@ fn open_conn() -> io::Result<()> {
 }
 
 fn handle(mut stream: TcpStream, files: &str) -> io::Result<()> {
-    let msg = format!("<h2>Directories:</h2><p>{}</p>", files);
+    let msg = format!("<h3>Directories:</h3>\n<div>{}</div>", files);
 
     let lines: &[String] = &[
         format!("HTTP/1.1 200 OK"),

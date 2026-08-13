@@ -18,8 +18,12 @@ pub mod dir_reader {
 
     pub fn list_files() -> io::Result<String> {
         let files = dir_reader()?;
+        let files_to_html: Vec<String> = files
+            .iter()
+            .map(|file| format!("<p>{}</p>", file))
+            .collect();
 
-        let file_list = files.as_slice().join("\n");
+        let file_list = files_to_html.as_slice().join("\n");
 
         Ok(file_list)
     }
