@@ -3,7 +3,9 @@ use std::{
     net::{Ipv4Addr, SocketAddrV4, TcpListener, TcpStream},
 };
 mod dir;
+mod requests;
 use dir::dir_reader::list_files;
+use requests::requests::{HTML, HTTPRequest};
 
 fn main() -> io::Result<()> {
     let _ = open_conn();
@@ -21,8 +23,8 @@ fn open_conn() -> io::Result<()> {
             Ok(st) => {
                 _ = handle(st, &files);
             }
-            Err(_) => {
-                println!("An error has occured");
+            Err(e) => {
+                println!("An error has occured, {:?}", e);
             }
         };
     }
@@ -30,15 +32,12 @@ fn open_conn() -> io::Result<()> {
 }
 
 fn handle(mut stream: TcpStream, files: &str) -> io::Result<()> {
-    let msg = format!("<h3>Directories:</h3>\n<div>{}</div>", files);
-
-    let lines: &[String] = &[
-        format!("HTTP/1.1 200 OK"),
-        format!("Content-Length: {}", msg.len()),
-        format!("Content-Type: text/html"),
-        format!(""),
-        msg.to_string(),
-    ];
-    stream.write_all(lines.join("\n").as_bytes())?;
+    let request = HTTPRequest {
+        req_type: String::from("200"),
+        msg: HTML {
+            tes: format!("<h3>Directories:</h3>\n<div>{}</div>", files),
+        },
+    };
+    stream.write_all(format!("{}", request).as_bytes())?;
     Ok(())
 }
