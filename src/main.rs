@@ -32,11 +32,12 @@ fn open_conn() -> io::Result<()> {
 }
 
 fn handle(mut stream: TcpStream, files: &str) -> io::Result<()> {
-    let request = HTTPRequest {
+    let msg: HTML = HTML {
+        tes: format!("<h3>Directories:</h3>\n<div>{}</div>", files),
+    };
+    let request: HTTPRequest = HTTPRequest {
         req_type: String::from("200"),
-        msg: HTML {
-            tes: format!("<h3>Directories:</h3>\n<div>{}</div>", files),
-        },
+        msg: msg,
     };
     stream.write_all(format!("{}", request).as_bytes())?;
     Ok(())
