@@ -7,18 +7,18 @@ pub mod requests {
     }
 
     pub struct HTML {
-        pub tes: String,
+        pub result: String,
     }
 
     impl Display for HTML {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "<div>{}</div>", self.tes)
+            write!(f, "{}", self.result)
         }
     }
 
     impl From<&HTML> for String {
         fn from(value: &HTML) -> Self {
-            value.tes.to_string()
+            value.result.to_string()
         }
     }
 
@@ -34,4 +34,14 @@ pub mod requests {
             )
         }
     }
+
+    pub trait Header1 {
+        fn to_h1(self) -> String;
+    }
+    
+    impl Header1 for &str {
+    fn to_h1(self) -> String {
+        format!("<h1>{}</h1>", self)
+    }
+}
 }

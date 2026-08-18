@@ -5,8 +5,7 @@ pub mod dir_reader {
         path::Path,
     };
 
-    pub fn dir_reader() -> Result<Vec<String>, Error> {
-        let path = Path::new(".");
+    pub fn dir_reader(path: &Path) -> Result<Vec<String>, Error> {
         let mut entries: Vec<String> = read_dir(path)?
             .map(|res| res.map(|e: DirEntry| String::from(e.path().to_str().unwrap())))
             .collect::<Result<Vec<_>, Error>>()?;
@@ -16,8 +15,8 @@ pub mod dir_reader {
         Ok(entries)
     }
 
-    pub fn list_files() -> io::Result<String> {
-        let files = dir_reader()?;
+    pub fn list_files(path: &Path) -> io::Result<String> {
+        let files = dir_reader(path)?;
         let files_to_html: Vec<String> = files
             .iter()
             .map(|file| format!("<p>{}</p>", file))
@@ -28,3 +27,6 @@ pub mod dir_reader {
         Ok(file_list)
     }
 }
+
+// TODO: Use structs and enums to simplify process.
+// ex: struct for --http requests--(DONE), list of paths, creating listener
